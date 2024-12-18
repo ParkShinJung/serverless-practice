@@ -1,9 +1,0 @@
-services:
-  user:
-    path: ./packages/user
-
-  role-part:
-    path: ./packages/role-part
-
-  scheduled:
-    path: ./packages/scheduled
