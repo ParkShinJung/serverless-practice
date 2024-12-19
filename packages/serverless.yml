@@ -1,0 +1,53 @@
+# serverless.yml
+provider:
+  name: aws
+  runtime: nodejs20.x
+  profile: personal
+  region: ap-northeast-2
+#  apiGateway:
+#    restApiId: hkr8ei1i5a
+#    restApiRootResourceId: jwpqenrar1
+  environment:
+#    NODE_ENV: ${opt:stage}
+    DYNAMODB_TABLE: serverless-practice
+#    JWT_ACCESS_SECRET: testQwer!234
+#    JWT_REFRESH_SECRET: Qwer!234test
+    S3_BUCKET_NAME: serverless-practice-data
+  deploymentBucket:
+    name: serverless-practice-service-bucket
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:DescribeTable
+            - dynamodb:Query
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: arn:aws:dynamodb:ap-northeast-2:*:table/serverless-practice
+
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+            - s3:GetObject
+            - s3:DeleteObject
+          Resource: arn:aws:s3:::serverless-practice/*
+
+        - Effect: Allow
+          Action:
+            - s3:ListBucket
+          Resource: arn:aws:s3:::serverless-practice
+plugins:
+  - serverless-offline
+
+build:
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap:
+      type: linked
+    external:
+      - '@aws-sdk/*'
