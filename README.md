@@ -8,7 +8,7 @@
 
 ---
 ### Function 내부 구조
-![img.png](img.png)
+![img.png](commons/image/img.png)
 > Event Source -> Function -> Service
 
 Event Source: 함수가 실행될 조건이자 이벤트 소스 (HTTP 요청, 메시징, Cron 등)<br/>
