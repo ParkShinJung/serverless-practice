@@ -64,3 +64,8 @@ Service: 작업 결과를 처리(DB 저장, 다른 서비스로 전달, 메시�
 * 데이터 저장은 DB 서비스(DynamoDB) 사용
 * 사용자 인증은 JWT(Amazon Cognito) 사용
 * Route 53으로 도메인 구입 및 제공(선택사항)
+
+---
+### 내가 공부한대로 이해하기 쉽게 적은 README.md
+* [README2.md](./README2.md)
+
