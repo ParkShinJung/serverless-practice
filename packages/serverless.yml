@@ -5,13 +5,13 @@ provider:
   profile: personal
   region: ap-northeast-2
 #  apiGateway:
-#    restApiId: hkr8ei1i5a
-#    restApiRootResourceId: jwpqenrar1
+#    restApiId: test
+#    restApiRootResourceId: test
   environment:
 #    NODE_ENV: ${opt:stage}
     DYNAMODB_TABLE: serverless-practice
-#    JWT_ACCESS_SECRET: testQwer!234
-#    JWT_REFRESH_SECRET: Qwer!234test
+#    JWT_ACCESS_SECRET: test
+#    JWT_REFRESH_SECRET: test
     S3_BUCKET_NAME: serverless-practice-data
   deploymentBucket:
     name: serverless-practice-service-bucket
@@ -23,6 +23,7 @@ provider:
           Action:
             - dynamodb:DescribeTable
             - dynamodb:Query
+            - dynamodb:Scan
             - dynamodb:GetItem
             - dynamodb:PutItem
             - dynamodb:UpdateItem
@@ -40,6 +41,16 @@ provider:
           Action:
             - s3:ListBucket
           Resource: arn:aws:s3:::serverless-practice
+
+functions:
+  getBoardList:
+    handler: crud/src/get/handler.getBoardList
+    events:
+      - http:
+          path: board/list
+          method: get
+          cors: true
+
 plugins:
   - serverless-offline
 

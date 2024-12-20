@@ -9,8 +9,8 @@
 ---
 ### 예시
 * SQL version
-
-<img src="img.png" width="300" height="300" /><br/>
+    
+    <img src="commons/image/img_3.png" width="300" height="300" /><br/>
 
 * NoSQL(DynamoDB) version
 

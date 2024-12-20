@@ -21,7 +21,6 @@ export const putItem = async (params: PutItemCommandInput) => {
   return await dynamoClient.send(command);
 };
 
-// 단건조회
 export const getItem = async (params: GetItemCommandInput) => {
   const command = new GetItemCommand(params);
   return await dynamoClient.send(command);
@@ -42,7 +41,6 @@ export const executeTransactWrite = async (transactItems: TransactWriteItemsComm
   return await dynamoClient.send(command);
 };
 
-// 다건조회
 export const getQueryItem = async (params: QueryCommandInput) => {
   const command = new QueryCommand(params);
   return await dynamoClient.send(command);
