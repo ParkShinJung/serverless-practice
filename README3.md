@@ -6,7 +6,7 @@
 - **런타임**: Node.js 20<br/>
 - **패키지 매니저**: Yarn<br/>
 - **DB**: DynamoDB<br/>
-- **배포**: AWS Lambda, API Gateway, S3, CloudFront, DynamoDB<br/>
+- **배포**: AWS Lambda, API Gateway, S3, CloudFront(예정), DynamoDB<br/>
 - **프레임워크**: Serverless Framework<br/><br/>
 ---
 
