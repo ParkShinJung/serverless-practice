@@ -1,9 +1,17 @@
-import {TableName} from "../../commons/type/Types";
+import {SK, TableName} from "../../commons/type/Types";
 import {BoardItem} from "../../commons/item/BoardItem";
 import {marshall, unmarshall} from "@aws-sdk/util-dynamodb";
 import {getItem, getQueryItem} from "../../commons/dynamo/dynamoCommands";
-import {Constants} from "../../Constants";
 import {QueryCommandInput} from "@aws-sdk/client-dynamodb";
+import {Constants} from "../../commons/Constants";
+import {UserItem} from "../../commons/item/UserItem";
+
+export interface BoardCreateRequest {
+  title: string;
+  content: string;
+  userSk: SK;
+  description: string;
+}
 
 export const getBoardListData = async (tableName: TableName): Promise<Array<BoardItem>> => {
   const params = {
@@ -134,4 +142,28 @@ export const getBoardCommentListByPageData = async (tableName: string, boardId: 
     currentPage++;
   }
   return items;
+}
+
+export const getUserListData = async (tableName: TableName): Promise<Array<UserItem>> => {
+  const params = {
+    TableName: tableName,
+    KeyConditionExpression: "PK = :pk",
+    ExpressionAttributeValues: marshall({
+      ":pk": Constants.USER
+    }, { removeUndefinedValues: true })  // 옵션 추가
+  }
+  const result = await getQueryItem(params);
+  return result.Items ? result.Items.map(item => unmarshall(item) as UserItem) : [];
+}
+
+export const getUserDetailData = async (tableName: TableName, userKey: string): Promise<UserItem> => {
+  const params = {
+    TableName: tableName,
+    Key: marshall({
+      PK: Constants.USER,
+      SK: userKey
+    }, { removeUndefinedValues: true })
+  }
+  const result = await getItem(params);
+  return result.Item ? unmarshall(result.Item) as UserItem : Constants.EMPTY_USER_ITEM;
 }

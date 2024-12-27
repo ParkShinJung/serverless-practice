@@ -1,12 +1,13 @@
 import {APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult} from "aws-lambda";
-import {newApiResponse} from "../../../../commons/utils/ApiProxy";
+
 import {
   getBoardCommentListByPageData,
   getBoardDetailData,
   getBoardListByPageData, getBoardListBySearchAndPageData,
   getBoardListBySearchData,
-  getBoardListData
+  getBoardListData, getUserDetailData, getUserListData
 } from "../../crudFunction";
+import {newApiResponse} from "../../../../commons/ApiProxy";
 
 const tableName: string = process.env.DYNAMODB_TABLE ?? '';
 
@@ -54,4 +55,20 @@ export const getBoardCommentListByPage: APIGatewayProxyHandler = async (event: A
   const size: number = Number(event.queryStringParameters?.size) ?? 1;
 
   return newApiResponse(200, await getBoardCommentListByPageData(tableName, boardKey, size, page));
+}
+
+// 7. 유저 전체 조회(페이징 처리 X, 검색 조건 X)
+export const getUserList: APIGatewayProxyHandler = async (): Promise<APIGatewayProxyResult> => {
+
+  return newApiResponse(200, await getUserListData(tableName));
+};
+
+// 8. 유저 상세 조회(단건 조회)
+export const getUserDetail: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+  const userKey: string = event.pathParameters?.userKey ?? '';
+  if (!userKey) {
+    return newApiResponse(400, "The 'userKey' PathVariable required");
+  }
+
+  return newApiResponse(200, await getUserDetailData(tableName, userKey));
 }
