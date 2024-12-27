@@ -43,13 +43,12 @@ provider:
           Resource: arn:aws:s3:::serverless-practice
 
 functions:
-  getBoardList:
-    handler: crud/src/get/handler.getBoardList
-    events:
-      - http:
-          path: board/list
-          method: get
-          cors: true
+###  게시판  ###
+  ${file(./crud/functions.yml):functions}
+###  로그인  ###
+
+###  유저  ###
+
 
 plugins:
   - serverless-offline
