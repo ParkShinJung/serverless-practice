@@ -1,16 +1,17 @@
 import {SK, TableName} from "../../commons/type/Types";
 import {BoardItem} from "../../commons/item/BoardItem";
 import {marshall, unmarshall} from "@aws-sdk/util-dynamodb";
-import {getItem, getQueryItem} from "../../commons/dynamo/dynamoCommands";
+import {getItem, getQueryItem, putItem} from "../../commons/dynamo/dynamoCommands";
 import {QueryCommandInput} from "@aws-sdk/client-dynamodb";
 import {Constants} from "../../commons/Constants";
 import {UserItem} from "../../commons/item/UserItem";
+import {newBoardSK} from "../../commons/utils/CommonUtils";
 
 export interface BoardCreateRequest {
   title: string;
   content: string;
   userSk: SK;
-  description: string;
+  description?: string;
 }
 
 export const getBoardListData = async (tableName: TableName): Promise<Array<BoardItem>> => {
@@ -166,4 +167,25 @@ export const getUserDetailData = async (tableName: TableName, userKey: string): 
   }
   const result = await getItem(params);
   return result.Item ? unmarshall(result.Item) as UserItem : Constants.EMPTY_USER_ITEM;
+}
+
+export const createNewBoardItem = (request: BoardCreateRequest, userItem: UserItem): BoardItem => {
+  return {
+    PK: Constants.BOARD,
+    SK: newBoardSK(),
+    title: request.title,
+    content: request.content,
+    user: userItem,
+    description: request.description,
+    createdAt: new Date().getTime()
+  }
+}
+
+export const saveBoard = async (boardItem: BoardItem, tableName: TableName): Promise<void> => {
+  const putParams = {
+    TableName: tableName,
+    Item: marshall(boardItem)
+  };
+
+  await putItem(putParams);
 }
