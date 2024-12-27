@@ -5,7 +5,7 @@ import {getItem, getQueryItem, putItem} from "../../commons/dynamo/dynamoCommand
 import {QueryCommandInput} from "@aws-sdk/client-dynamodb";
 import {Constants} from "../../commons/Constants";
 import {UserItem} from "../../commons/item/UserItem";
-import {newBoardSK, newCommentSK, timestamp} from "../../commons/utils/CommonUtils";
+import {newBoardSK, newCommentSK, newUserSK, timestamp} from "../../commons/utils/CommonUtils";
 import {CommentItem} from "../../commons/item/CommentItem";
 
 export interface BoardCreateRequest {
@@ -19,6 +19,13 @@ export interface CommentAddRequest {
   boardSk: string;
   content: string;
   userSk: SK;
+}
+
+export interface UserCreateRequest {
+  name: string;
+  email: string;
+  password: string;
+  birth: string;
 }
 
 export const getBoardListData = async (tableName: TableName): Promise<Array<BoardItem>> => {
@@ -211,6 +218,27 @@ export const saveComment = async (commentItem: CommentItem, tableName: TableName
   const putParams = {
     TableName: tableName,
     Item: marshall(commentItem)
+  };
+
+  await putItem(putParams);
+}
+
+export const createNewUserItem = (request: UserCreateRequest): UserItem => {
+  return {
+    PK: Constants.USER,
+    SK: newUserSK(),
+    email: request.email,
+    name: request.name,
+    password: request.password,
+    birth: request.birth,
+    createdAt: timestamp()
+  }
+}
+
+export const saveUser = async (userItem: UserItem, tableName: TableName): Promise<void> => {
+  const putParams = {
+    TableName: tableName,
+    Item: marshall(userItem)
   };
 
   await putItem(putParams);

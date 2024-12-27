@@ -37,6 +37,10 @@ export const newCommentSK = (): string => {
   return Constants.COMMENT_PREFIX + generateId();
 }
 
+export const newUserSK = (): string => {
+  return Constants.USER_PREFIX + generateId();
+}
+
 export const isString = (value: any): value is string => {
   return typeof value === 'string';
 };

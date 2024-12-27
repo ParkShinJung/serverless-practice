@@ -2,9 +2,9 @@ import {TableName} from "../../../../commons/type/Types";
 import {APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult} from "aws-lambda";
 import {
   BoardCreateRequest, CommentAddRequest,
-  createNewBoardItem, createNewCommentItem,
+  createNewBoardItem, createNewCommentItem, createNewUserItem,
   getUserDetailData,
-  saveBoard, saveComment
+  saveBoard, saveComment, saveUser, UserCreateRequest
 } from "../../crudFunction";
 import {parseBody} from "../../../../commons/utils/CommonUtils";
 import {newApiResponse} from "../../../../commons/ApiProxy";
@@ -44,4 +44,16 @@ export const addBoardComment: APIGatewayProxyHandler = async (event: APIGatewayP
   await saveComment(commentItem, tableName);
 
   return newApiResponse(200, "Board created successfully");
+}
+
+
+// 3. 사용자 추가
+export const createUser: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+  const request: UserCreateRequest = parseBody<UserCreateRequest>(event);
+
+  // TODO: user Password 암호화
+  const userItem: UserItem = createNewUserItem(request);
+  await saveUser(userItem, tableName);
+
+  return newApiResponse(200, "User created successfully");
 }
