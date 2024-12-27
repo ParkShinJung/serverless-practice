@@ -6,7 +6,7 @@ export interface BoardItem {
   title: string;
   content: string;
   user: UserItem;
-  description: string;
+  description?: string;
   createdAt: number;
-  updatedAt: number;
+  updatedAt?: number;
 }
