@@ -6,5 +6,5 @@ export interface UserItem {
   password: string;
   birth: string;
   createdAt: number;
-  updatedAt: number;
+  updatedAt?: number;
 }

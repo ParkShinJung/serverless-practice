@@ -6,5 +6,5 @@ export interface CommentItem {
   content: string;
   user: UserItem;
   createdAt: number;
-  updatedAt: number;
+  updatedAt?: number;
 }
