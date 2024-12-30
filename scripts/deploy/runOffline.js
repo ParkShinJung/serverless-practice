@@ -6,25 +6,6 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-rl.question('Enter the service name to run offline: ', (name) => {
-  if (!name) {
-    console.error('\n'
-        + '==========================================================\n'
-        + 'Error: No package name provided.'
-        + '\nPlease provide a package name.'
-        + '\n=========================================================='
-        + '\n');
-    rl.close();
-    process.exit(1);
-  }
-
-  rl.question('Enter the stage (dev/prod): ', (stage) => {
-    if (!stage) {
-      stage = 'dev';
-    }
-
-    process.env.name = name;
-    process.env.stage = stage;
 
     rl.close();
 
@@ -36,7 +17,7 @@ rl.question('Enter the service name to run offline: ', (name) => {
       }
       console.log(compileStdout);
 
-      const command = `cd packages/${name} && serverless offline --stage ${stage}`;
+      const command = `cd packages && serverless offline --stage dev`;
       console.log(`Executing: ${command}`);
       const childProcess = exec(command, (error, stdout, stderr) => {
         if (error) {
@@ -54,6 +35,4 @@ rl.question('Enter the service name to run offline: ', (name) => {
         console.error(data.toString());
       });
     });
-  });
-});
 
