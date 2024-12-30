@@ -3,7 +3,7 @@ functions:
   ##  조회  ##
   # 1. 전체 게시판 리스트 조회(페이징 처리 X, 검색 조건 X)
   getBoardList:
-    handler: src/get/handler.getBoardList
+    handler: crud/src/get/handler.getBoardList
     events:
       - http:
           path: board/list
@@ -11,7 +11,7 @@ functions:
           cors: true
   # 2. 전체 게시판 리스트 조회(페이징 처리 X, 검색 조건 O)
   getBoardListBySearch:
-    handler: src/get/handler.getBoardListBySearch
+    handler: crud/src/get/handler.getBoardListBySearch
     events:
       - http:
           path: board/search
@@ -19,7 +19,7 @@ functions:
           cors: true
   # 3. 전체 게시판 리스트 조회(페이징 처리 O, 검색 조건 X)
   getBoardListByPage:
-    handler: src/get/handler.getBoardListByPage
+    handler: crud/src/get/handler.getBoardListByPage
     events:
       - http:
           path: board/page
@@ -27,7 +27,7 @@ functions:
           cors: true
   # 4. 전체 게시판 리스트 조회(페이징 처리 O, 검색 조건 O)
   getBoardListBySearchAndPage:
-    handler: src/get/handler.getBoardListBySearchAndPage
+    handler: crud/src/get/handler.getBoardListBySearchAndPage
     events:
       - http:
           path: board/search/page
@@ -35,7 +35,7 @@ functions:
           cors: true
   # 5. 게시판 상세 조회(단건 조회)
   getBoardDetail:
-    handler: src/get/handler.getBoardDetail
+    handler: crud/src/get/handler.getBoardDetail
     events:
       - http:
           path: board/detail/{boardKey}
@@ -43,7 +43,7 @@ functions:
           cors: true
   # 6. 게시판 별 댓글 조회(페이징 처리 O)
   getBoardCommentListByPage:
-    handler: src/get/handler.getBoardCommentListByPage
+    handler: crud/src/get/handler.getBoardCommentListByPage
     events:
       - http:
           path: comment/{boardKey}
@@ -54,7 +54,7 @@ functions:
   ##  조회  ##
   # 1. 전체 유저 리스트 조회(페이징 처리 X, 검색 조건 X)
   getUserList:
-    handler: src/get/handler.getUserList
+    handler: crud/src/get/handler.getUserList
     events:
       - http:
           path: user/list
@@ -62,7 +62,7 @@ functions:
           cors: true
   # 2. 유저 상세 조회(단건 조회)
   getUserDetail:
-    handler: src/get/handler.getUserDetail
+    handler: crud/src/get/handler.getUserDetail
     events:
       - http:
           path: user/detail/{userKey}
