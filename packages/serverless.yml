@@ -40,8 +40,8 @@ provider:
 functions:
   ### 게시판 ###
   ${file(./crud/functions.yml):functions}
-### 로그인 ###
-### 유저 ###
+  ### 로그인 ###
+  ### 유저 ###
 
 plugins:
   - serverless-offline
