@@ -1,0 +1,19 @@
+functions:
+###  슬랙 알림  ###
+  ##  알림 전손  ##
+  # 1. 해당 api 실행시 개인(App 메시지)에게 전송
+  sendSlackAppNotice:
+    handler: slack/src/post/handler.sendSlackAppNotice
+    events:
+      - http:
+          path: slack/app
+          method: post
+          cors: true
+  # 2. 해당 api 실행시 채널에 전송
+  sendSlackChannelNotice:
+    handler: slack/src/post/handler.sendSlackChannelNotice
+    events:
+      - http:
+          path: slack/channel
+          method: post
+          cors: true
