@@ -8,9 +8,6 @@ provider:
     DYNAMODB_TABLE: serverless-practice
     S3_BUCKET_NAME: serverless-practice-data
     SERVICE_NAME: practice
-    SLACK_BOT_OAUTH_TOKEN: xoxb-8231106248466-8231146434963-ljO9x7sM4bQUcwVNo7nTBj5s
-    SLACK_USER_ID: U0875PK1GL9
-    SLACK_CHANNEL_ID: C086Q82M1LM
   deploymentBucket:
     name: serverless-practice-service-bucket
 
@@ -42,9 +39,7 @@ provider:
 
 functions:
   ### 게시판 ###
-  - ${file(./crud/functions.yml):functions}
-  ### 슬랙 ###
-  - ${file(./slack/functions.yml):functions}
+  ${file(./crud/functions.yml):functions}
   ### 로그인 ###
   ### 유저 ###
 
