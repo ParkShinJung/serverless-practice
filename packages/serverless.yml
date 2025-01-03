@@ -8,9 +8,11 @@ provider:
     DYNAMODB_TABLE: serverless-practice
     S3_BUCKET_NAME: serverless-practice-data
     SERVICE_NAME: practice
-    SLACK_BOT_OAUTH_TOKEN: ${env:SLACK_BOT_OAUTH_TOKEN}
-    SLACK_USER_ID: ${env:SLACK_USER_ID}
-    SLACK_CHANNEL_ID: ${env:SLACK_CHANNEL_ID}
+    JWT_ACCESS_SECRET: test123456789
+    JWT_REFRESH_SECRET: 123456789test
+    SLACK_BOT_OAUTH_KEY: ${env:SLACK_BOT_OAUTH_KEY}
+    SLACK_USER_KEY: ${env:SLACK_USER_KEY}
+    SLACK_CHANNEL_KEY: ${env:SLACK_CHANNEL_KEY}
   deploymentBucket:
     name: serverless-practice-service-bucket
 
@@ -39,6 +41,16 @@ provider:
           Action:
             - s3:ListBucket
           Resource: arn:aws:s3:::serverless-practice
+
+        - Effect: Allow
+          Action:
+            - logs:DescribeLogStreams
+            - logs:PutLogEvents
+            - logs:CreateLogGroup
+            - logs:CreateLogStream  # 이 권한을 추가
+          Resource: arn:aws:logs:ap-northeast-2:825765395574:log-group:/aws/lambda/my-api-gateway-logs:*
+
+
 
 functions:
   ### 게시판 ###

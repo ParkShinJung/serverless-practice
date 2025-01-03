@@ -68,3 +68,13 @@ functions:
           path: user/detail/{userKey}
           method: get
           cors: true
+
+  ##  등록  ##
+  # 1. 게시판 등록
+  createBoard:
+    handler: crud/src/post/handler.createBoard
+    events:
+      - http:
+          path: board
+          method: post
+          cors: true
