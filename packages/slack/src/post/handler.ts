@@ -1,9 +1,9 @@
 import { APIGatewayProxyHandler, APIGatewayProxyResult } from "aws-lambda";
 import axios from "axios";
 
-const slackBotOauthToken: string = process.env.SLACK_BOT_OAUTH_TOKEN ?? '';
-const slackUserId: string = process.env.SLACK_USER_ID ?? '';
-const slackChannelId: string = process.env.SLACK_CHANNEL_ID ?? '';
+const slackBotOauthToken: string = process.env.SLACK_BOT_OAUTH_KEY ?? '';
+const slackUserId: string = process.env.SLACK_USER_KEY ?? '';
+const slackChannelId: string = process.env.SLACK_CHANNEL_KEY ?? '';
 const slackApiUrl: string = "https://slack.com/api/chat.postMessage";
 
 // 1. 해당 api 실행시 개인 에게 전송(App 채팅 으로 전송됨)
