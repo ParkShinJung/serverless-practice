@@ -2,7 +2,7 @@ import {TableName} from "../../../../commons/type/Types";
 import {APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult} from "aws-lambda";
 import {
   BoardCreateRequest, CommentAddRequest,
-  createNewBoardItem, createNewCommentItem, createNewUserItem,
+  createNewBoardItem, createNewCommentItem, createNewUserItem, findUserByEmail,
   getUserDetailData,
   saveBoard, saveComment, saveUser, UserCreateRequest
 } from "../../crudFunction";
@@ -11,6 +11,7 @@ import {newApiResponse} from "../../../../commons/ApiProxy";
 import {UserItem} from "../../../../commons/item/UserItem";
 import {BoardItem} from "../../../../commons/item/BoardItem";
 import {CommentItem} from "../../../../commons/item/CommentItem";
+import {hashPassword} from "../../../../commons/utils/SecurityUtils";
 
 const tableName: TableName = process.env.DYNAMODB_TABLE ?? '';
 
@@ -51,8 +52,12 @@ export const addBoardComment: APIGatewayProxyHandler = async (event: APIGatewayP
 export const createUser: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const request: UserCreateRequest = parseBody<UserCreateRequest>(event);
 
-  // TODO: user Password 암호화
-  const userItem: UserItem = createNewUserItem(request);
+  const userData: UserItem = await findUserByEmail(tableName, request.email);
+  if (userData.PK) {
+    return newApiResponse(400, "The 'email' field is duplicated.");
+  }
+
+  const userItem: UserItem = await createNewUserItem(request);
   await saveUser(userItem, tableName);
 
   return newApiResponse(200, "User created successfully");

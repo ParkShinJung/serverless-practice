@@ -63,6 +63,7 @@
    brew services restart grafana
    ifconfig   # IP 확인
    http://{IP 주소}:3000/login 접속(ID: admin, PW: admin)
+   http://172.16.20.139:3000/login
     ```
 2. 그라파나 대시보드 작성
    1. CloudWatch 데이터 소스 추가

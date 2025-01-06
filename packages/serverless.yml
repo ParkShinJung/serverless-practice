@@ -58,7 +58,7 @@ functions:
   ### 슬랙 ###
   - ${file(./slack/functions.yml):functions}
   ### 로그인 ###
-  ### 유저 ###
+  - ${file(./login/functions.yml):functions}
 
 plugins:
   - serverless-offline
