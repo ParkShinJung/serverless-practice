@@ -1,0 +1,9 @@
+functions:
+###  로그인  ###
+  userLogin:
+    handler: login/src/post/handler.userLogin
+    events:
+      - http:
+          path: login
+          method: post
+          cors: true

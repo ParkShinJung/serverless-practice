@@ -7,6 +7,7 @@ import {Constants} from "../../commons/Constants";
 import {UserItem} from "../../commons/item/UserItem";
 import {newBoardSK, newCommentSK, newUserSK, timestamp} from "../../commons/utils/CommonUtils";
 import {CommentItem} from "../../commons/item/CommentItem";
+import {hashPassword} from "../../commons/utils/SecurityUtils";
 
 export interface BoardCreateRequest {
   title: string;
@@ -223,13 +224,13 @@ export const saveComment = async (commentItem: CommentItem, tableName: TableName
   await putItem(putParams);
 }
 
-export const createNewUserItem = (request: UserCreateRequest): UserItem => {
+export const createNewUserItem = async (request: UserCreateRequest): Promise<UserItem> => {
   return {
     PK: Constants.USER,
     SK: newUserSK(),
     email: request.email,
     name: request.name,
-    password: request.password,
+    password: await hashPassword(request.password),
     birth: request.birth,
     createdAt: timestamp()
   }
@@ -242,4 +243,31 @@ export const saveUser = async (userItem: UserItem, tableName: TableName): Promis
   };
 
   await putItem(putParams);
+}
+
+export const findUserByEmail = async (tableName: string, email: string): Promise<UserItem> => {
+  const params: QueryCommandInput = {
+    TableName: tableName,
+    KeyConditionExpression: "PK = :pk",
+    FilterExpression: "#email = :email",
+    ExpressionAttributeNames: {
+      "#email": "email",
+    },
+    ExpressionAttributeValues: marshall(
+        {
+          ":pk": Constants.USER,
+          ":email": email,
+        },
+        {removeUndefinedValues: true}
+    ),
+  };
+
+  const result = await getQueryItem(params);
+
+  // 결과 처리
+  if (result.Items && result.Items.length > 0) {
+    return unmarshall(result.Items[0]) as UserItem;
+  }
+
+  return Constants.EMPTY_USER_ITEM;
 }

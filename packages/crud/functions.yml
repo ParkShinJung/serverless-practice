@@ -78,3 +78,19 @@ functions:
           path: board
           method: post
           cors: true
+  # 2. 댓글 등록
+  addBoardComment:
+    handler: crud/src/post/handler.addBoardComment
+    events:
+      - http:
+          path: board/comment
+          method: post
+          cors: true
+  # 3. 사용자 등록
+  createUser:
+    handler: crud/src/post/handler.createUser
+    events:
+      - http:
+          path: user
+          method: post
+          cors: true

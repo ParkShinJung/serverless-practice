@@ -26,12 +26,12 @@
 ---
 
 ### 해당 프로젝트에서 사용중인 DynamoDB 테이블 구조
-   | Name    | Attribute | PK           | SK                     | createdAt     | title    | name     | email | content         | description       | password     | birth      | user                                              | updatedAt     |     
-   |---------|-----------|--------------|------------------------|---------------|----------|----------|-------|-----------------|-------------------|--------------|------------|---------------------------------------------------|---------------|
-   | **게시판** | *Type*    | `String`     | `String`               | `number`      | `String` |          |       | `String`        | `String`          |              |            | JSON                                              | `number`      |
-   |         | *Example* | BOARD        | BOARD#{uuid}           | 1735191752000 | 게시글1     |          |       | 게시글 내용          | test decscription |              |            | {PK: "USER", "SK": "USER#{uuid} or {email} ...}"} | 1735191752000 |
-   | **답글**  | *Type*    | `String`     | `String`               | `number`      |          |          |       | `String`        |                   |              |            | JSON                                              | `number`      |
-   |         | *Example* | BOARD#{uuid} | COMMENT#{uuid}         | 1735191752000 |          |          |       | 댓글 내용           |                   |              |            | {PK: "USER", "SK": "USER#{uuid} or {email} ...}"} | 1735191752000 |
-   | **유저**  | *Type*    | `String`     | `String`               | `number`      |          | `String` |       | `String         |                   | `String`     | `String`   |                                                   | `number`      |
-   |         | *Example* | USER         | USER#{uuid} or {email} | 1735191752000 |          | 홍길동      |       | test@test.co.kr |                   | #sf13$153^&u | 2000-01-01 |                                                   | 1735191752000 |
+   | Name    | Attribute | PK           | SK                     | createdAt     | title    | name     | email           | content  | description       | password     | birth      | user                                              | updatedAt     |     
+   |---------|-----------|--------------|------------------------|---------------|----------|----------|-----------------|----------|-------------------|--------------|------------|---------------------------------------------------|---------------|
+   | **게시판** | *Type*    | `String`     | `String`               | `number`      | `String` |          |                 | `String` | `String`          |              |            | JSON                                              | `number`      |
+   |         | *Example* | BOARD        | BOARD#{uuid}           | 1735191752000 | 게시글1     |          |                 | 게시글 내용   | test decscription |              |            | {PK: "USER", "SK": "USER#{uuid} or {email} ...}"} | 1735191752000 |
+   | **답글**  | *Type*    | `String`     | `String`               | `number`      |          |          |                 | `String` |                   |              |            | JSON                                              | `number`      |
+   |         | *Example* | BOARD#{uuid} | COMMENT#{uuid}         | 1735191752000 |          |          |                 | 댓글 내용    |                   |              |            | {PK: "USER", "SK": "USER#{uuid} or {email} ...}"} | 1735191752000 |
+   | **유저**  | *Type*    | `String`     | `String`               | `number`      |          | `String` |                 | `String  |                   | `String`     | `String`   |                                                   | `number`      |
+   |         | *Example* | USER         | USER#{uuid} or {email} | 1735191752000 |          | 홍길동      | test@test.co.kr |          |                   | #sf13$153^&u | 2000-01-01 |                                                   | 1735191752000 |
 
