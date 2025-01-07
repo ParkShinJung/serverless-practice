@@ -7,3 +7,11 @@ functions:
           path: login
           method: post
           cors: true
+  ###  토큰 만료시 리프레쉬 기능  ###
+  refreshAccessToken:
+    handler: login/src/post/handler.refreshAccessToken
+    events:
+      - http:
+          path: refresh/token
+          method: post
+          cors: true
