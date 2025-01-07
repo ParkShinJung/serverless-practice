@@ -4,7 +4,7 @@ import {newApiResponse} from "../../../../commons/ApiProxy";
 import {parseBody} from "../../../../commons/utils/CommonUtils";
 import {findUserByEmail} from "../../../crud/crudFunction";
 import {
-  generateAccessToken,
+  generateAccessToken, refreshToken,
   TokenResponse,
   verifyPassword
 } from "../../../../commons/utils/SecurityUtils";
@@ -57,3 +57,16 @@ export const userLogin: APIGatewayProxyHandler = async (event: APIGatewayProxyEv
 
   return newApiResponse(200, response);
 };
+
+export const refreshAccessToken: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+  const requestBody: string = event.body ?? '{}';
+  const {refreshToken: providedRefreshToken} = JSON.parse(requestBody);
+
+  if (!providedRefreshToken) {
+    return newApiResponse(400, "Refresh token is required.");
+  }
+
+  const newAccessToken = refreshToken(providedRefreshToken);
+  return newApiResponse(200, {accessToken: newAccessToken});
+};
+
