@@ -1,7 +1,7 @@
 import {SK, TableName} from "../../commons/type/Types";
 import {BoardItem} from "../../commons/item/BoardItem";
 import {marshall, unmarshall} from "@aws-sdk/util-dynamodb";
-import {getItem, getQueryItem, putItem} from "../../commons/dynamo/dynamoCommands";
+import {deleteItem, getItem, getQueryItem, putItem} from "../../commons/dynamo/dynamoCommands";
 import {QueryCommandInput} from "@aws-sdk/client-dynamodb";
 import {Constants} from "../../commons/Constants";
 import {UserItem} from "../../commons/item/UserItem";
@@ -271,3 +271,12 @@ export const findUserByEmail = async (tableName: string, email: string): Promise
 
   return Constants.EMPTY_USER_ITEM;
 }
+
+export const deleteBoardData = async (tableName: TableName, sk: SK): Promise<void> => {
+  const userParams = {
+    TableName: tableName,
+    Key: marshall({PK: Constants.BOARD, SK: sk})
+  };
+
+  await deleteItem(userParams);
+};
