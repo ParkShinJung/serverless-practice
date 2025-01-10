@@ -11,6 +11,7 @@ import {newApiResponse} from "../../../../commons/ApiProxy";
 import {UserItem} from "../../../../commons/item/UserItem";
 import {BoardItem} from "../../../../commons/item/BoardItem";
 import {CommentItem} from "../../../../commons/item/CommentItem";
+import {hashPassword} from "../../../../commons/utils/SecurityUtils";
 
 const tableName: TableName = process.env.DYNAMODB_TABLE ?? '';
 
