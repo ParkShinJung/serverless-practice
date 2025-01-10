@@ -29,6 +29,13 @@ export interface UserCreateRequest {
   birth: string;
 }
 
+export interface BoardUpdateRequest {
+  boardId: string;
+  title: string;
+  content: string;
+  description: string;
+}
+
 export const getBoardListData = async (tableName: TableName): Promise<Array<BoardItem>> => {
   const params = {
     TableName: tableName,
@@ -328,3 +335,23 @@ export const deleteUserData = async (tableName: TableName, userId: SK): Promise<
 
   await deleteItem(userParams);
 };
+
+export const updateBoardData = async (tableName: TableName, boardItem: BoardItem, request: BoardUpdateRequest): Promise<void> => {
+  if (request.title) {
+    boardItem.title = request.title;
+  }
+  if (request.content) {
+    boardItem.content = request.content;
+  }
+  if (request.description) {
+    boardItem.description = request.description;
+  }
+
+  const putParams = {
+    TableName: tableName,
+    Item: marshall(boardItem)
+  };
+
+  await putItem(putParams);
+
+}
