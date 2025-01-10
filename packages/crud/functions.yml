@@ -49,15 +49,6 @@ functions:
           path: comment/{boardKey}
           method: get
           cors: true
-  ## 수정  ##
-  # 1. 게시판 수정
-  updateBoard:
-    handler: crud/src/put/handler.updateBoard
-    events:
-      - http:
-          path: board
-          method: put
-          cors: true
 
 ###  유저  ###
   ##  조회  ##
