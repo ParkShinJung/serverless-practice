@@ -1,5 +1,6 @@
 import {BoardItem} from "./item/BoardItem";
 import {UserItem} from "./item/UserItem";
+import {CommentItem} from "./item/CommentItem";
 
 export const Constants = {
   BOARD: "BOARD",
@@ -13,7 +14,7 @@ export const Constants = {
   // DynamoDB
   EMPTY_BOARD_ITEM: {} as BoardItem,
   EMPTY_USER_ITEM: {} as UserItem,
-
+  EMPTY_COMMENT_ITEM: {} as CommentItem,
 
   // JWT
   ACCESS_TOKEN_EXPIRATION: '1d',

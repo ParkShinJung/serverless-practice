@@ -1,7 +1,7 @@
-import {SK, TableName} from "../../commons/type/Types";
+import {PK, SK, TableName} from "../../commons/type/Types";
 import {BoardItem} from "../../commons/item/BoardItem";
 import {marshall, unmarshall} from "@aws-sdk/util-dynamodb";
-import {getItem, getQueryItem, putItem} from "../../commons/dynamo/dynamoCommands";
+import {deleteItem, getItem, getQueryItem, putItem} from "../../commons/dynamo/dynamoCommands";
 import {QueryCommandInput} from "@aws-sdk/client-dynamodb";
 import {Constants} from "../../commons/Constants";
 import {UserItem} from "../../commons/item/UserItem";
@@ -129,6 +129,18 @@ export const getBoardDetailData = async (tableName: string, boardId: string): Pr
   }
   const result = await getItem(params);
   return result.Item ? unmarshall(result.Item) as BoardItem : Constants.EMPTY_BOARD_ITEM;
+}
+
+export const getCommentDetailData = async (tableName: string, boardId: string, commentId: string): Promise<CommentItem> => {
+  const params = {
+    TableName: tableName,
+    Key: marshall({
+      PK: boardId,
+      SK: commentId
+    }, { removeUndefinedValues: true })
+  }
+  const result = await getItem(params);
+  return result.Item ? unmarshall(result.Item) as CommentItem : Constants.EMPTY_COMMENT_ITEM;
 }
 
 export const getBoardCommentListByPageData = async (tableName: string, boardId: string, page: number, size: number): Promise<Array<BoardItem>> => {
@@ -271,3 +283,48 @@ export const findUserByEmail = async (tableName: string, email: string): Promise
 
   return Constants.EMPTY_USER_ITEM;
 }
+
+export const deleteBoardData = async (tableName: TableName, sk: SK): Promise<void> => {
+  const userParams = {
+    TableName: tableName,
+    Key: marshall({PK: Constants.BOARD, SK: sk})
+  };
+
+  await deleteItem(userParams);
+};
+
+export const deleteCommentByBoardData = async (tableName: TableName, boardId: PK): Promise<void> => {
+  const params = {
+    TableName: tableName,
+    KeyConditionExpression: "PK = :pk and begins_with(SK, :prefix)",
+    ExpressionAttributeValues: marshall({
+      ":pk": boardId,
+      ":prefix": {S: Constants.COMMENT_PREFIX}
+    }, { removeUndefinedValues: true })
+  };
+  const result = await getQueryItem(params);
+  if (result.Items) {
+    for (const item of result.Items) {
+      const commentItem = unmarshall(item) as CommentItem;
+      await deleteCommentData(tableName, boardId, commentItem.SK);
+    }
+  }
+}
+
+export const deleteCommentData = async (tableName: TableName, boardId: PK, commentId: SK): Promise<void> => {
+  const userParams = {
+    TableName: tableName,
+    Key: marshall({PK: boardId, SK: commentId})
+  };
+
+  await deleteItem(userParams);
+};
+
+export const deleteUserData = async (tableName: TableName, userId: SK): Promise<void> => {
+  const userParams = {
+    TableName: tableName,
+    Key: marshall({PK: Constants.USER, SK: userId})
+  };
+
+  await deleteItem(userParams);
+};
