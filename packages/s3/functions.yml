@@ -1,0 +1,25 @@
+functions:
+###  파일 업로드  ###
+  fileUpload:
+    handler: s3/src/post/handler.fileUpload
+    events:
+      - http:
+          path: file/upload
+          method: post
+          cors: true
+###  파일 다운로드  ###
+  fileDownload:
+    handler: s3/src/post/handler.fileDownload
+    events:
+      - http:
+          path: file/download
+          method: post
+          cors: true
+###  파일 삭제  ###
+  fileDelete:
+    handler: s3/src/post/handler.fileDelete
+    events:
+      - http:
+          path: file/delete
+          method: delete
+          cors: true
