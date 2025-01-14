@@ -11,6 +11,9 @@ export const Constants = {
   USER: "USER",
   USER_PREFIX: "USER#",
 
+  FILE: "FILE",
+  FILE_PREFIX: "FILE#",
+
   // DynamoDB
   EMPTY_BOARD_ITEM: {} as BoardItem,
   EMPTY_USER_ITEM: {} as UserItem,
