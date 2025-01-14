@@ -33,6 +33,10 @@ export const newBoardSK = (): string => {
   return Constants.BOARD_PREFIX + generateId();
 }
 
+export const newFileSK = (): string => {
+  return Constants.FILE_PREFIX + generateId();
+}
+
 export const newCommentSK = (): string => {
   return Constants.COMMENT_PREFIX + generateId();
 }
