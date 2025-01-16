@@ -10,8 +10,13 @@ import {
 } from "../../s3Function";
 import {FileItem} from "../../../../commons/item/FileItem";
 import {marshall,} from "@aws-sdk/util-dynamodb";
-import {putItem} from "../../../../commons/dynamo/dynamoCommands";
-import {GetObjectCommand, PutObjectCommand, S3Client} from "@aws-sdk/client-s3";
+import {deleteItem, putItem} from "../../../../commons/dynamo/dynamoCommands";
+import {
+  DeleteObjectCommand,
+  GetObjectCommand,
+  PutObjectCommand,
+  S3Client
+} from "@aws-sdk/client-s3";
 import {Readable} from "node:stream";
 
 const tableName: TableName = process.env.DYNAMODB_TABLE ?? '';
@@ -81,11 +86,50 @@ export const fileDownload: APIGatewayProxyHandler = async (event: APIGatewayProx
   }
 };
 
+
 // 파일 삭제
 export const fileDelete: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+  const request: downloadFileRequest = parseBody<downloadFileRequest>(event);
 
-  return newApiResponse(200, "File uploaded successfully");
-}
+  // 1️⃣ DynamoDB에서 파일 정보 조회
+  const fileItem: FileItem = await getFileDetailData(tableName, request.fileId);
+  if (!fileItem) {
+    return newApiResponse(404, "File not found");
+  }
+
+  const filePath = `${fileItem.path}/${fileItem.fileName}`;
+
+  // 2️⃣ S3에서 파일 삭제
+  const s3Client = new S3Client({});
+  const deleteObjectParams = {
+    Bucket: bucketName,
+    Key: filePath
+  };
+
+  try {
+    await s3Client.send(new DeleteObjectCommand(deleteObjectParams));
+
+    // 3️⃣ DynamoDB에서 파일 정보 삭제
+    const deleteParams = {
+      TableName: tableName,
+      Key: marshall({
+        PK: "FILE",
+        SK: request.fileId
+      }, {removeUndefinedValues: true})
+    };
+
+    await deleteItem(deleteParams);
+
+    // 4️⃣ 성공 응답 반환
+    return newApiResponse(200, {
+      message: "File and metadata deleted successfully",
+      fileName: fileItem.fileName
+    });
+  } catch (error) {
+    console.error("File Deletion Error:", error);
+    return newApiResponse(500, "File deletion failed");
+  }
+};
 
 // S3 객체를 Base64로 변환하는 함수
 const streamToBase64 = async (stream: Readable): Promise<string> => {
