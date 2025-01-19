@@ -68,6 +68,7 @@ export const getBoardListByPageData = async (tableName: string, page: number, si
         ":pk": Constants.BOARD, // Replace with the actual partition key value
       }),
       Limit: size,
+
       ExclusiveStartKey: lastEvaluatedKey, // 페이징 처리의 핵심
     };
     // DynamoDB Query 실행
